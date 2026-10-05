@@ -1,37 +1,56 @@
 let humanScore = 0;
 let computerScore = 0;
 
-function playGame(){
-    // Kind of struggled with this particular function a lot. 
-    for(let i =  0; i < 5; i++){
-        let humanChoice = getHumanChoice();
-        let computerChoice = getComputerChoice();
-        playRound(humanChoice, computerChoice);
-    }
-    if(computerScore > humanScore){
-    console.log(`Computer Won! `);
-    }
-    else{
-        console.log(`You Won!`);
-    }
-    
-}
-// I feel like there could have been another way for me to do the logic for this function and not have a really long line for the else if statement, But well i can always take care of it later
+const rock = document.getElementById("rock");
+const paper = document.getElementById("paper");
+const scissors = document.getElementById("scissors");
+
+rock.addEventListener('click', () => {
+    playRound('rock', getComputerChoice());
+})
+
+paper.addEventListener('click', () => {
+    playRound('paper', getComputerChoice());
+})
+
+scissors.addEventListener('click', () => {
+    playRound('scissors', getComputerChoice());
+})
+// Things that change based on input and stuff
+const winOrLose = document.createElement('div');
+document.body.appendChild(winOrLose);
+const result = document.createElement('div');
+document.body.appendChild(result);
+const winner = document.createElement('h1');
+document.body.appendChild(winner);
+
 function playRound(humanChoice, computerChoice){
+    // making it so that they play to 5 rounds, and whoever gets to five first gets a message display
+    if(humanScore === 5 || computerScore === 5){
+        if(humanScore > computerScore){
+            winner.textContent = 'Yay! you win, and computer loses';
+        }
+        else{
+            winner.textContent = 'Awwww! you lose and Computer wins';
+        }
+
+        return;
+    }
+    // Logic for the game
     humanChoice = humanChoice.toLowerCase();
     if(humanChoice === computerChoice){
-        console.log("It's a Tie! ");
+        winOrLose.textContent = "It's a Tie! ";
     }
     else if(humanChoice == "rock" && computerChoice == "paper" || humanChoice == "scissors" && computerChoice == "rock" || humanChoice == "paper" && computerChoice == "scissors" ){
-        console.log(`You lose! ${computerChoice} beats ${humanChoice}`);
+        winOrLose.textContent = `You lose! ${computerChoice} beats ${humanChoice}`;
         computerScore += 1;
     }
     else{
-        console.log(`You win! ${humanChoice} beats ${computerChoice}`);
+        winOrLose.textContent = `You win! ${humanChoice} beats ${computerChoice}`;
         humanScore += 1;
     }
 
-    console.log(`Computer: ${computerScore}   User: ${humanScore}`);
+    result.textContent = `Computer: ${computerScore}   User: ${humanScore}`;
 
 }
 
@@ -59,5 +78,3 @@ function getHumanChoice(){
     let userInput = prompt("Please Enter either Rock, Paper, or Scissors!");
     return userInput;
 }
-
-playGame();
